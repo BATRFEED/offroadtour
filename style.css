@@ -167,14 +167,67 @@ button:hover {
   margin-top: 40px;
   border-radius: 15px;
   overflow: hidden;
+   align-items: center; 
+   justify-content: center; 
 }
 
 /* =====================
    9. Footer
    ===================== */
-footer {
-  background: #222;
-  color: #aaa;
+ .footer {
+  background: #0b1c2d;
+  color: #cfd8dc;
+  padding: 60px 20px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.footer h3,
+.footer h4 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.footer p {
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer ul li {
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.footer a {
+  color: #cfd8dc;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #ffffff;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+.footer_copyright{
+      color: #ffffff;
+        
   text-align: center;
-  padding: 25px;
+  justify-content: center; /* Центр по горизонтали */
+  align-items: center;     /* Центр по вертикали */
+  height: 100vh;           /* Высота, чтобы было видно центрирование */
 }
