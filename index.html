@@ -1,150 +1,105 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TravelKG — О нас</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f8fa;
-      color: #333;
-    }
-    header {
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center/cover no-repeat;
-      color: white;
-      padding: 100px 20px;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-    }
-    header p {
-      font-size: 20px;
-    }
-    nav {
-      text-align: center;
-      margin-top: 15px;
-    }
-    nav a {
-      margin: 0 10px;
-      color: white;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    section {
-      padding: 60px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    .about-text {
-      line-height: 1.6;
-      max-width: 900px;
-      margin: auto;
-    }
-    .team-cards, .features-cards, .reviews-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      text-align: center;
-    }
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      height: 180px;
-      object-fit: cover;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-    }
-    .gallery img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-    footer {
-      background: #222;
-      color: #aaa;
-      text-align: center;
-      padding: 20px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TravelKG — Турфирма</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>TravelKG — О нашей команде</h1>
-  <p>Локальные гиды & персональные приключения по Кыргызстану</p>
-  <nav>
-    <a href="#about">О нас</a>
-    <a href="#team">Команда</a>
-    <a href="#why">Почему мы</a>
-    <a href="#gallery">Фото</a>
-  </nav>
+
+<nav>
+<a href="#home">Главная</a>
+<a href="#about">О нас</a>
+<a href="#team">Команда</a>
+<a href="#why">Почему мы</a>
+<a href="#gallery">Фото</a>
+<a href="#contact">Контакты</a>
+</nav>
+
+
+<header id="home">
+<h1>TravelKG</h1>
+<p>Локальные гиды, уникальные маршруты и путешествия по Кыргызстану</p>
 </header>
 
+
 <section id="about">
-  <h2>О нас</h2>
-  <div class="about-text">
-    <p>Мы — команда местных гидов с большим опытом путешествий по Кыргызстану и Центральной Азии. Наша цель — сделать ваши туры незабываемыми: от горных троп до культурных встреч.</p>
-    <p>С нами вы увидите самые живописные места, побываете в настоящих кыргызских долинах и получите персональный сервис на каждом этапе.</p>
-  </div>
+<h2>О нас</h2>
+<div class="about">
+Мы — команда профессиональных гидов и организаторов туров. Показываем Кыргызстан таким, каким его знают местные.
+</div>
 </section>
+
+
+<section>
+<h2>Видео приветствие</h2>
+<div class="video-box">
+<iframe src="https://www.youtube.com/embed/Scxs7L0vhZ4" allowfullscreen></iframe>
+</div>
+</section>
+
 
 <section id="team">
-  <h2>Наша команда</h2>
-  <div class="team-cards">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2" alt="Guide 1">
-      <h3>Айбек</h3>
-      <p>Главный гид — 10 лет в горах Кыргызстана.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d" alt="Guide 2">
-      <h3>Алина</h3>
-      <p>Эксперт по культурным турам.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb" alt="Guide 3">
-      <h3>Давид</h3>
-      <p>Ответственный за безопасность и маршруты.</p>
-    </div>
-  </div>
+<h2>Наша команда</h2>
+<div class="cards">
+<div class="card"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2"><h3>Айбек</h3><p>Горные маршруты</p></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d"><h3>Алина</h3><p>Культурные туры</p></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb"><h3>Давид</h3><p>Безопасность</p></div>
+</div>
 </section>
+
 
 <section id="why">
-  <h2>Почему выбирают нас</h2>
-  <div class="features-cards">
-    <div class="card">Локальные эксперты</div>
-    <div class="card">Индивидуальные маршруты</div>
-    <div class="card">Комфортный транспорт</div>
-    <div class="card">Поддержка 24/7</div>
-  </div>
+<h2>Почему мы</h2>
+<div class="cards">
+<div class="card">Локальные гиды</div>
+<div class="card">Индивидуальные маршруты</div>
+<div class="card">Комфортный транспорт</div>
+<div class="card">Поддержка 24/7</div>
+</div>
 </section>
+
 
 <section id="gallery">
-  <h2>Фотогалерея</h2>
-  <div class="gallery"></div>
+<h2>Фотогалерея</h2>
+<div class="gallery" id="gallery"></div>
+<div class="upload">
+<input type="file" id="photos" multiple accept="image/*">
+<button onclick="addPhotos()">Загрузить фото</button>
+</div>
 </section>
 
+
+<section id="contact">
+<h2>Связаться с нами</h2>
+<form>
+<input type="text" placeholder="Имя" required>
+<input type="tel" placeholder="Телефон" required>
+<textarea placeholder="Сообщение"></textarea>
+<button>Отправить</button>
+</form>
+
+
+<div class="map">
+<iframe src="https://maps.google.com/maps?q=bishkek&z=13&output=embed"></iframe>
+</div>
+</section>
+
+
 <footer>
-  <p>© 2025 TravelKG — Локальные туры в Кыргызстане</p>
+© 2025 TravelKG
 </footer>
 
-</body>
+
+<script>
+function addPhotos() {
+const input = document.getElementById('photos');
+const gallery = document.getElementById('gallery');
+for (const file of input.files) {
+const img = document.createElement('img');
+img.src = URL.createObjectURL(file);
+gallery.appendChild(img);
+}}</script>
 </html>
