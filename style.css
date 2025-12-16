@@ -225,9 +225,9 @@ button:hover {
 }
 .footer_copyright{
       color: #ffffff;
-        
-  text-align: center;
-  justify-content: center; /* Центр по горизонтали */
-  align-items: center;     /* Центр по вертикали */
-  height: 100vh;           /* Высота, чтобы было видно центрирование */
+      text-align: center;
+      justify-content: center; /* Центр по горизонтали */
+      align-items: center;     /* Центр по вертикали */
+      height: 100vh;           /* Высота, чтобы было видно центрирование */
 }
+
