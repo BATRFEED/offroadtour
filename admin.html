@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin • Reviews</title>
+  <style>
+    :root{
+      --bg:#07131c; --text:#eaf2ff; --muted:rgba(234,242,255,.72);
+      --panel:rgba(255,255,255,.06); --line:rgba(255,255,255,.12);
+      --gold:#c6a56b;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    h1{margin:0;font-size:22px;letter-spacing:.02em}
+    .hint{color:var(--muted);font-size:13px}
+    .card{margin-top:16px;border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:16px}
+    .grid{display:grid;grid-template-columns:1fr 1fr 140px 120px;gap:10px}
+    input,textarea,select{
+      width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);color:var(--text);outline:none;
+    }
+    textarea{min-height:92px;resize:vertical}
+    .btn{cursor:pointer;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:var(--text)}
+    .btn:hover{transform:translateY(-1px)}
+    .btn{transition:transform .12s ease}
+    .btn.gold{border-color:rgba(198,165,107,.40);background:rgba(198,165,107,.16)}
+    .btn.danger{border-color:rgba(255,90,90,.45);background:rgba(255,90,90,.14)}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .list{display:grid;gap:12px;margin-top:14px}
+    .item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:18px;padding:14px}
+    .meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);font-size:12px;opacity:.9}
+    .small{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .lock{display:grid;gap:10px;max-width:420px}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Admin • Reviews</h1>
+        <div class="hint">Edit / delete / approve reviews stored in this browser (localStorage).</div>
+      </div>
+      <div class="row">
+        <a class="btn" href="./index-ru.html">← Site</a>
+      </div>
+    </div>
+
+    <div class="card" id="loginCard">
+      <div class="lock">
+        <div style="font-weight:800">Enter admin password</div>
+        <input id="pw" type="password" placeholder="Password" autocomplete="current-password" />
+        <div class="row">
+          <button class="btn gold" id="loginBtn">Login</button>
+          <div class="small">⚠️ This is a tiny client-side “admin”. For real security, you need server auth.</div>
+        </div>
+        <div id="loginNote" class="small"></div>
+      </div>
+    </div>
+
+    <div class="card" id="app" hidden>
+      <div class="row">
+        <div style="font-weight:800">Reviews</div>
+        <div class="actions">
+          <button class="btn" id="exportBtn">Export JSON</button>
+          <button class="btn" id="importBtn">Import JSON</button>
+          <button class="btn danger" id="resetBtn">Reset to seed</button>
+        </div>
+      </div>
+
+      <div class="list" id="list"></div>
+    </div>
+  </div>
+
+<script>
+  const LS_KEY = "kg_guides_reviews_v2";
+  const AUTH_KEY = "kg_guides_admin_ok";
+  // Change password here:
+  const ADMIN_PASSWORD = "admin123";
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch(e) {
+      return [];
+    }
+  }
+  function save(list) {
+    localStorage.setItem(LS_KEY, JSON.stringify(list));
+  }
+  function starsRow(n) {
+    const v = Math.max(1, Math.min(5, Number(n)||5));
+    return "★".repeat(v) + "☆".repeat(5 - v);
+  }
+  function esc(s) {
+    return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+  }
+
+  function ensureSeed() {
+    // if empty -> seed by opening a public page once; but we add fallback seed here too
+    if (load().length) return;
+    const seeded = [
+      {id:"seed_1", who:"Tihomir M", loc:"Zadar, Croatia", stars:5, quote:"Breathtaking nature and a very well-planned route. The guide adjusted the plan to weather, and we still caught the best views. Thank you for a perfect trip!", createdAt:"2025-01-01T00:00:00Z", approved:true},
+      {id:"seed_2", who:"Elena K", loc:"Berlin, Germany", stars:5, quote:"Great balance: not rushed, but we saw a lot. Loved the lake views and the yurt night — unforgettable moments and amazing photos.", createdAt:"2025-01-01T00:00:00Z", approved:true},
+      {id:"seed_3", who:"James H", loc:"Austin, USA", stars:5, quote:"Communication was fast, car was comfortable, and the itinerary made sense. We felt safe and taken care of on every day.", createdAt:"2025-01-01T00:00:00Z", approved:true},
+    ];
+    save(seeded);
+  }
+
+  function render() {
+    const box = document.getElementById("list");
+    const list = load().slice().sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
+    if (!list.length) {
+      box.innerHTML = '<div class="small">No reviews found. Add a review on the public page first.</div>';
+      return;
+    }
+    box.innerHTML = list.map(r => `
+      <div class="item" data-id="${esc(r.id)}">
+        <div class="meta">
+          <div style="font-weight:800">${esc(r.who||"")}</div>
+          <div class="pill">${starsRow(r.stars)} • ${r.approved===false ? "hidden" : "visible"}</div>
+        </div>
+        <div class="small" style="margin-top:4px">${esc(r.loc||"")} • ${esc(r.createdAt||"")}</div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="grid">
+            <input name="who" value="${esc(r.who||"")}" placeholder="Name" />
+            <input name="loc" value="${esc(r.loc||"")}" placeholder="Location" />
+            <input name="stars" type="number" min="1" max="5" value="${Number(r.stars)||5}" />
+            <select name="approved">
+              <option value="true" ${r.approved===false ? "" : "selected"}>Visible</option>
+              <option value="false" ${r.approved===false ? "selected" : ""}>Hidden</option>
+            </select>
+          </div>
+          <textarea name="quote" placeholder="Review text">${esc(r.quote||"")}</textarea>
+          <div class="actions">
+            <button class="btn gold" data-act="save">Save</button>
+            <button class="btn danger" data-act="del">Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function onAction(e) {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    const act = btn.getAttribute("data-act");
+    const item = btn.closest(".item");
+    const id = item?.getAttribute("data-id");
+    if (!id) return;
+
+    const list = load();
+    const i = list.findIndex(x => x.id === id);
+    if (i === -1) return;
+
+    if (act === "del") {
+      if (!confirm("Delete this review?")) return;
+      list.splice(i, 1);
+      save(list);
+      render();
+      return;
+    }
+
+    // save
+    const who = item.querySelector('input[name="who"]').value.trim();
+    const loc = item.querySelector('input[name="loc"]').value.trim();
+    const stars = Math.max(1, Math.min(5, Number(item.querySelector('input[name="stars"]').value || 5)));
+    const approved = item.querySelector('select[name="approved"]').value === "true";
+    const quote = item.querySelector('textarea[name="quote"]').value.trim();
+
+    list[i] = { ...list[i], who, loc, stars, approved, quote };
+    save(list);
+    render();
+  }
+
+  function showApp() {
+    ensureSeed();
+    document.getElementById("loginCard").hidden = true;
+    document.getElementById("app").hidden = false;
+    render();
+  }
+
+  // login
+  if (localStorage.getItem(AUTH_KEY) === "1") {
+    showApp();
+  }
+
+  document.getElementById("loginBtn").addEventListener("click", ()=>{
+    const pw = document.getElementById("pw").value;
+    const note = document.getElementById("loginNote");
+    if (pw === ADMIN_PASSWORD) {
+      localStorage.setItem(AUTH_KEY, "1");
+      showApp();
+    } else {
+      note.textContent = "Wrong password.";
+    }
+  });
+
+  document.getElementById("list").addEventListener("click", onAction);
+
+  // export/import/reset
+  document.getElementById("exportBtn").addEventListener("click", ()=>{
+    const data = JSON.stringify(load(), null, 2);
+    const blob = new Blob([data], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "reviews.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", async ()=>{
+    const inp = document.createElement("input");
+    inp.type = "file";
+    inp.accept = "application/json";
+    inp.onchange = async ()=>{
+      const file = inp.files?.[0];
+      if (!file) return;
+      const txt = await file.text();
+      try {
+        const parsed = JSON.parse(txt);
+        if (!Array.isArray(parsed)) throw new Error("Not an array");
+        save(parsed);
+        render();
+        alert("Imported.");
+      } catch(e) {
+        alert("Import failed: " + e.message);
+      }
+    };
+    inp.click();
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", ()=>{
+    if (!confirm("Reset reviews to seed? This will overwrite current list.")) return;
+    localStorage.removeItem(LS_KEY);
+    ensureSeed();
+    render();
+  });
+</script>
+</body>
+</html>
